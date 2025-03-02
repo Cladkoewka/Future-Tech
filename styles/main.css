@@ -834,29 +834,36 @@ button[aria-label]::after {
     row-gap: 1.25rem;
   }
 }
-@media (width <= 47.99875rem) {
-  .advantage-card {
-    row-gap: 0.875rem;
-  }
-}
 @media (width <= 90.06125rem) {
   .advantage-card__image {
     width: 2.5rem;
   }
 }
-@media (width <= 47.99875rem) {
-  .advantage-card__image {
-    width: 1.875rem;
-  }
-}
 .advantage-card__link {
+  --circleSize: 3.25rem;
+  --circleMarginLeft: 1.25rem;
+  position: relative;
   display: grid;
   row-gap: 0.25rem;
+  padding-right: calc(var(--circleSize) + var(--circleMarginLeft));
 }
 @media (width <= 90.06125rem) {
   .advantage-card__link {
+    --circleSize: 2.75rem;
+    --circleMarginLeft: 0.875rem;
     row-gap: 0.125rem;
   }
+}
+.advantage-card__link::after {
+  width: var(--circleSize);
+  height: var(--circleSize);
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+  content: "";
+  right: 0;
+  background: url("../../icons/arrow-top-right-black.svg") center no-repeat var(--color-accent);
+  border-radius: 50%;
 }
 .advantage-card__details {
   font-size: clamp(0.875rem, 0.7794117647rem + 0.3921568627vw, 1.25rem);
@@ -1110,11 +1117,6 @@ button[aria-label]::after {
 }
 .team__person:not(:first-child) {
   margin-left: calc(var(--personImageSize) / 4 * -1);
-}
-
-.header,
-.footer {
-  display: none !important;
 }
 
 /*# sourceMappingURL=main.css.map */
