@@ -1,31 +1,36 @@
-import BaseComponent from './BaseComponent.js'
+import BaseComponent from "./BaseComponent.js"
 
-const rootSelector = '[data-js-tabs]'
+const rootSelector = "[data-js-tabs]"
 
 class Tabs extends BaseComponent {
   selectors = {
     root: rootSelector,
-    button: '[data-js-tabs-button]',
-    content: '[data-js-tabs-content]',
+    button: "[data-js-tabs-button]",
+    content: "[data-js-tabs-content]",
   }
 
   stateClasses = {
-    isActive: 'is-active',
+    isActive: "is-active",
   }
 
   stateAttributes = {
-    ariaSelected: 'aria-selected',
-    tabIndex: 'tabindex',
+    ariaSelected: "aria-selected",
+    tabIndex: "tabindex",
   }
 
   constructor(rootElement) {
     super()
     this.rootElement = rootElement
-    this.buttonElements = this.rootElement.querySelectorAll(this.selectors.button)
-    this.contentElements = this.rootElement.querySelectorAll(this.selectors.content)
+    this.buttonElements = this.rootElement.querySelectorAll(
+      this.selectors.button
+    )
+    this.contentElements = this.rootElement.querySelectorAll(
+      this.selectors.content
+    )
     this.state = this.getProxyState({
-      activeTabIndex: [...this.buttonElements]
-        .findIndex((buttonElement) => buttonElement.classList.contains(this.stateClasses.isActive)),
+      activeTabIndex: [...this.buttonElements].findIndex((buttonElement) =>
+        buttonElement.classList.contains(this.stateClasses.isActive)
+      ),
     })
     this.limitTabsIndex = this.buttonElements.length - 1
     this.bindEvents()
@@ -38,8 +43,14 @@ class Tabs extends BaseComponent {
       const isActive = index === activeTabIndex
 
       buttonElement.classList.toggle(this.stateClasses.isActive, isActive)
-      buttonElement.setAttribute(this.stateAttributes.ariaSelected, isActive.toString())
-      buttonElement.setAttribute(this.stateAttributes.tabIndex, isActive ? '0' : '-1')
+      buttonElement.setAttribute(
+        this.stateAttributes.ariaSelected,
+        isActive.toString()
+      )
+      buttonElement.setAttribute(
+        this.stateAttributes.tabIndex,
+        isActive ? "0" : "-1"
+      )
     })
 
     this.contentElements.forEach((contentElement, index) => {
@@ -55,17 +66,19 @@ class Tabs extends BaseComponent {
   }
 
   previousTab = () => {
-    const newTabIndex = this.state.activeTabIndex === 0
-      ? this.limitTabsIndex
-      : this.state.activeTabIndex - 1
+    const newTabIndex =
+      this.state.activeTabIndex === 0
+        ? this.limitTabsIndex
+        : this.state.activeTabIndex - 1
 
     this.activateTab(newTabIndex)
   }
 
   nextTab = () => {
-    const newTabIndex = this.state.activeTabIndex === this.limitTabsIndex
-      ? 0
-      : this.state.activeTabIndex + 1
+    const newTabIndex =
+      this.state.activeTabIndex === this.limitTabsIndex
+        ? 0
+        : this.state.activeTabIndex + 1
 
     this.activateTab(newTabIndex)
   }
@@ -80,6 +93,7 @@ class Tabs extends BaseComponent {
 
   onButtonClick(buttonIndex) {
     this.state.activeTabIndex = buttonIndex
+    console.log("buttonIndex", buttonIndex)
   }
 
   onKeyDown = (event) => {
@@ -92,13 +106,13 @@ class Tabs extends BaseComponent {
       End: this.lastTab,
     }[code]
 
-    const isMacHomeKey = metaKey && code === 'ArrowLeft'
+    const isMacHomeKey = metaKey && code === "ArrowLeft"
     if (isMacHomeKey) {
       this.firstTab()
       return
     }
 
-    const isMacEndKey = metaKey && code === 'ArrowRight'
+    const isMacEndKey = metaKey && code === "ArrowRight"
     if (isMacEndKey) {
       this.lastTab()
       return
@@ -109,9 +123,9 @@ class Tabs extends BaseComponent {
 
   bindEvents() {
     this.buttonElements.forEach((buttonElement, index) => {
-      buttonElement.addEventListener('click', () => this.onButtonClick(index))
+      buttonElement.addEventListener("click", () => this.onButtonClick(index))
     })
-    this.rootElement.addEventListener('keydown', this.onKeyDown)
+    this.rootElement.addEventListener("keydown", this.onKeyDown)
   }
 }
 
